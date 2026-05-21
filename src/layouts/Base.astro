@@ -4,6 +4,9 @@ import { SEO } from 'astro-seo';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import CookieBanner from '../components/CookieBanner.astro';
+import PixelBlast from '../components/PixelBlast.astro';
+import Grainient from '../components/Grainient.astro';
+import BgControlPanel from '../components/BgControlPanel.astro';
 import { getSettings } from '../lib/site';
 
 interface Props {
@@ -59,15 +62,67 @@ const canonical = new URL(Astro.url.pathname, settings.url).toString();
       }}
       twitter={{ card: 'summary_large_image' }}
     />
+    <script is:inline>
+      (function () {
+        var allowed = ['pixel', 'grainient', 'none'];
+        var params = new URLSearchParams(window.location.search);
+        var bg = params.get('bg');
+        if (!bg || allowed.indexOf(bg) === -1) bg = 'pixel';
+        document.documentElement.dataset.bg = bg;
+      })();
+    </script>
   </head>
   <body class:list={[surface === 'dark' && 'surface-dark']}>
     <a href="#main" class="skip-link">Skip to content</a>
-    <Nav />
-    <main id="main">
-      <slot />
-    </main>
+    <div class="site-shell">
+      <PixelBlast />
+      <Grainient />
+      <Nav />
+      <main id="main">
+        <slot />
+      </main>
+    </div>
     <Footer />
     <CookieBanner />
+    <BgControlPanel />
+
+    <style>
+      .site-shell {
+        position: relative;
+        isolation: isolate;
+      }
+
+      .site-shell :global(.pixel-blast),
+      .site-shell :global(.grainient) {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100vh;
+        max-height: 900px;
+        z-index: 0;
+      }
+
+      .site-shell :global(.pixel-blast) {
+        opacity: 0.9;
+      }
+
+      :global(html[data-bg='grainient']) .site-shell :global(.pixel-blast),
+      :global(html[data-bg='none']) .site-shell :global(.pixel-blast) {
+        display: none;
+      }
+
+      :global(html[data-bg='pixel']) .site-shell :global(.grainient),
+      :global(html[data-bg='none']) .site-shell :global(.grainient) {
+        display: none;
+      }
+
+      .site-shell :global(.site-nav),
+      .site-shell > main {
+        position: relative;
+        z-index: 1;
+      }
+    </style>
 
     {settings.ga4MeasurementId && (
       <script is:inline define:vars={{ gaId: settings.ga4MeasurementId }}>

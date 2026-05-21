@@ -1,0 +1,380 @@
+---
+interface Props {
+  color1?: string;
+  color2?: string;
+  color3?: string;
+  timeSpeed?: number;
+  colorBalance?: number;
+  warpStrength?: number;
+  warpFrequency?: number;
+  warpSpeed?: number;
+  warpAmplitude?: number;
+  blendAngle?: number;
+  blendSoftness?: number;
+  rotationAmount?: number;
+  noiseScale?: number;
+  grainAmount?: number;
+  grainScale?: number;
+  grainAnimated?: boolean;
+  contrast?: number;
+  gamma?: number;
+  saturation?: number;
+  centerX?: number;
+  centerY?: number;
+  zoom?: number;
+  class?: string;
+}
+
+const {
+  color1 = '#3e43b8',
+  color2 = '#f6c453',
+  color3 = '#2a2e8e',
+  timeSpeed = 0.18,
+  colorBalance = 0,
+  warpStrength = 1,
+  warpFrequency = 5,
+  warpSpeed = 1.4,
+  warpAmplitude = 60,
+  blendAngle = 0,
+  blendSoftness = 0.08,
+  rotationAmount = 360,
+  noiseScale = 2,
+  grainAmount = 0.06,
+  grainScale = 2,
+  grainAnimated = true,
+  contrast = 1.15,
+  gamma = 1,
+  saturation = 1,
+  centerX = 0,
+  centerY = 0,
+  zoom = 0.9,
+  class: className,
+} = Astro.props;
+
+const config = {
+  color1,
+  color2,
+  color3,
+  timeSpeed,
+  colorBalance,
+  warpStrength,
+  warpFrequency,
+  warpSpeed,
+  warpAmplitude,
+  blendAngle,
+  blendSoftness,
+  rotationAmount,
+  noiseScale,
+  grainAmount,
+  grainScale,
+  grainAnimated,
+  contrast,
+  gamma,
+  saturation,
+  centerX,
+  centerY,
+  zoom,
+};
+---
+
+<div
+  class:list={['grainient', className]}
+  data-grainient
+  data-config={JSON.stringify(config)}
+  aria-hidden="true"
+></div>
+
+<style>
+  .grainient {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .grainient :global(canvas) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+</style>
+
+<script>
+  import * as THREE from 'three';
+
+  type GConfig = {
+    color1: string;
+    color2: string;
+    color3: string;
+    timeSpeed: number;
+    colorBalance: number;
+    warpStrength: number;
+    warpFrequency: number;
+    warpSpeed: number;
+    warpAmplitude: number;
+    blendAngle: number;
+    blendSoftness: number;
+    rotationAmount: number;
+    noiseScale: number;
+    grainAmount: number;
+    grainScale: number;
+    grainAnimated: boolean;
+    contrast: number;
+    gamma: number;
+    saturation: number;
+    centerX: number;
+    centerY: number;
+    zoom: number;
+  };
+
+  const hexToVec3 = (hex: string): THREE.Vector3 => {
+    const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    if (!m) return new THREE.Vector3(1, 1, 1);
+    return new THREE.Vector3(
+      parseInt(m[1], 16) / 255,
+      parseInt(m[2], 16) / 255,
+      parseInt(m[3], 16) / 255,
+    );
+  };
+
+  const VERTEX_SRC = /* glsl */ `
+    void main() {
+      gl_Position = vec4(position, 1.0);
+    }
+  `;
+
+  const FRAGMENT_SRC = /* glsl */ `
+    precision highp float;
+
+    uniform vec2  iResolution;
+    uniform float iTime;
+    uniform float uTimeSpeed;
+    uniform float uColorBalance;
+    uniform float uWarpStrength;
+    uniform float uWarpFrequency;
+    uniform float uWarpSpeed;
+    uniform float uWarpAmplitude;
+    uniform float uBlendAngle;
+    uniform float uBlendSoftness;
+    uniform float uRotationAmount;
+    uniform float uNoiseScale;
+    uniform float uGrainAmount;
+    uniform float uGrainScale;
+    uniform float uGrainAnimated;
+    uniform float uContrast;
+    uniform float uGamma;
+    uniform float uSaturation;
+    uniform vec2  uCenterOffset;
+    uniform float uZoom;
+    uniform vec3  uColor1;
+    uniform vec3  uColor2;
+    uniform vec3  uColor3;
+
+    out vec4 fragColor;
+
+    #define S(a,b,t) smoothstep(a,b,t)
+    mat2 Rot(float a){ float s=sin(a), c=cos(a); return mat2(c,-s,s,c); }
+    vec2 hash(vec2 p){
+      p = vec2(dot(p, vec2(2127.1, 81.17)), dot(p, vec2(1269.5, 283.37)));
+      return fract(sin(p) * 43758.5453);
+    }
+    float noise(vec2 p){
+      vec2 i = floor(p), f = fract(p), u = f * f * (3.0 - 2.0 * f);
+      float n = mix(
+        mix(dot(-1.0 + 2.0 * hash(i + vec2(0.0, 0.0)), f - vec2(0.0, 0.0)),
+            dot(-1.0 + 2.0 * hash(i + vec2(1.0, 0.0)), f - vec2(1.0, 0.0)), u.x),
+        mix(dot(-1.0 + 2.0 * hash(i + vec2(0.0, 1.0)), f - vec2(0.0, 1.0)),
+            dot(-1.0 + 2.0 * hash(i + vec2(1.0, 1.0)), f - vec2(1.0, 1.0)), u.x),
+        u.y);
+      return 0.5 + 0.5 * n;
+    }
+
+    void main(){
+      float t = iTime * uTimeSpeed;
+      vec2 C = gl_FragCoord.xy;
+      vec2 uv = C / iResolution.xy;
+      float ratio = iResolution.x / iResolution.y;
+      vec2 tuv = uv - 0.5 + uCenterOffset;
+      tuv /= max(uZoom, 0.001);
+
+      float degree = noise(vec2(t * 0.1, tuv.x * tuv.y) * uNoiseScale);
+      tuv.y *= 1.0 / ratio;
+      tuv *= Rot(radians((degree - 0.5) * uRotationAmount + 180.0));
+      tuv.y *= ratio;
+
+      float frequency = uWarpFrequency;
+      float ws = max(uWarpStrength, 0.001);
+      float amplitude = uWarpAmplitude / ws;
+      float warpTime = t * uWarpSpeed;
+      tuv.x += sin(tuv.y * frequency + warpTime) / amplitude;
+      tuv.y += sin(tuv.x * (frequency * 1.5) + warpTime) / (amplitude * 0.5);
+
+      vec3 colLav = uColor1;
+      vec3 colOrg = uColor2;
+      vec3 colDark = uColor3;
+      float b = uColorBalance;
+      float sft = max(uBlendSoftness, 0.0);
+      mat2 blendRot = Rot(radians(uBlendAngle));
+      float blendX = (tuv * blendRot).x;
+      float edge0 = -0.3 - b - sft;
+      float edge1 =  0.2 - b + sft;
+      float v0 =  0.5 - b + sft;
+      float v1 = -0.3 - b - sft;
+      vec3 layer1 = mix(colDark, colOrg, S(edge0, edge1, blendX));
+      vec3 layer2 = mix(colOrg,  colLav, S(edge0, edge1, blendX));
+      vec3 col = mix(layer1, layer2, S(v0, v1, tuv.y));
+
+      vec2 grainUv = uv * max(uGrainScale, 0.001);
+      if (uGrainAnimated > 0.5) { grainUv += vec2(iTime * 0.05); }
+      float grain = fract(sin(dot(grainUv, vec2(12.9898, 78.233))) * 43758.5453);
+      col += (grain - 0.5) * uGrainAmount;
+
+      col = (col - 0.5) * uContrast + 0.5;
+      float luma = dot(col, vec3(0.2126, 0.7152, 0.0722));
+      col = mix(vec3(luma), col, uSaturation);
+      col = pow(max(col, 0.0), vec3(1.0 / max(uGamma, 0.001)));
+      col = clamp(col, 0.0, 1.0);
+
+      fragColor = vec4(col, 1.0);
+    }
+  `;
+
+  const init = (container: HTMLElement) => {
+    const cfg = JSON.parse(container.dataset.config || '{}') as GConfig;
+
+    const renderer = new THREE.WebGLRenderer({
+      antialias: false,
+      alpha: true,
+      powerPreference: 'high-performance',
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    container.appendChild(renderer.domElement);
+
+    const uniforms = {
+      iResolution: { value: new THREE.Vector2(1, 1) },
+      iTime: { value: 0 },
+      uTimeSpeed: { value: cfg.timeSpeed },
+      uColorBalance: { value: cfg.colorBalance },
+      uWarpStrength: { value: cfg.warpStrength },
+      uWarpFrequency: { value: cfg.warpFrequency },
+      uWarpSpeed: { value: cfg.warpSpeed },
+      uWarpAmplitude: { value: cfg.warpAmplitude },
+      uBlendAngle: { value: cfg.blendAngle },
+      uBlendSoftness: { value: cfg.blendSoftness },
+      uRotationAmount: { value: cfg.rotationAmount },
+      uNoiseScale: { value: cfg.noiseScale },
+      uGrainAmount: { value: cfg.grainAmount },
+      uGrainScale: { value: cfg.grainScale },
+      uGrainAnimated: { value: cfg.grainAnimated ? 1 : 0 },
+      uContrast: { value: cfg.contrast },
+      uGamma: { value: cfg.gamma },
+      uSaturation: { value: cfg.saturation },
+      uCenterOffset: { value: new THREE.Vector2(cfg.centerX, cfg.centerY) },
+      uZoom: { value: cfg.zoom },
+      uColor1: { value: hexToVec3(cfg.color1) },
+      uColor2: { value: hexToVec3(cfg.color2) },
+      uColor3: { value: hexToVec3(cfg.color3) },
+    };
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    const material = new THREE.ShaderMaterial({
+      vertexShader: VERTEX_SRC,
+      fragmentShader: FRAGMENT_SRC,
+      uniforms,
+      depthTest: false,
+      depthWrite: false,
+      glslVersion: THREE.GLSL3,
+    });
+
+    const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
+    scene.add(quad);
+
+    const t0 = performance.now();
+    let visible = true;
+    let inView = true;
+    let raf = 0;
+
+    const setSize = () => {
+      const w = container.clientWidth || 1;
+      const h = container.clientHeight || 1;
+      renderer.setSize(w, h, false);
+      uniforms.iResolution.value.set(
+        renderer.domElement.width,
+        renderer.domElement.height,
+      );
+    };
+
+    setSize();
+    const ro = new ResizeObserver(setSize);
+    ro.observe(container);
+
+    const io = new IntersectionObserver((entries) => {
+      inView = entries[0]?.isIntersecting ?? true;
+    });
+    io.observe(container);
+
+    const onVisibility = () => {
+      visible = document.visibilityState === 'visible';
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+
+    const animate = () => {
+      if (!visible || !inView) {
+        raf = requestAnimationFrame(animate);
+        return;
+      }
+      uniforms.iTime.value = (performance.now() - t0) * 0.001;
+      renderer.render(scene, camera);
+      raf = requestAnimationFrame(animate);
+    };
+    raf = requestAnimationFrame(animate);
+
+    (window as any).__grainient = {
+      setUniform(name: string, value: number) {
+        const u = (uniforms as any)[name];
+        if (u) u.value = value;
+      },
+      setColor(slot: 1 | 2 | 3, hex: string) {
+        const v = hexToVec3(hex);
+        const target = (
+          slot === 1 ? uniforms.uColor1 : slot === 2 ? uniforms.uColor2 : uniforms.uColor3
+        ).value as THREE.Vector3;
+        target.copy(v);
+      },
+      setCenter(x: number, y: number) {
+        uniforms.uCenterOffset.value.set(x, y);
+      },
+    };
+
+    return () => {
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+      io.disconnect();
+      document.removeEventListener('visibilitychange', onVisibility);
+      quad.geometry.dispose();
+      material.dispose();
+      renderer.dispose();
+      renderer.forceContextLoss();
+      if (renderer.domElement.parentElement === container) {
+        container.removeChild(renderer.domElement);
+      }
+    };
+  };
+
+  const bootstrap = () => {
+    document.querySelectorAll<HTMLElement>('[data-grainient]').forEach((el) => {
+      if (el.dataset.gInit === '1') return;
+      el.dataset.gInit = '1';
+      init(el);
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootstrap);
+  } else {
+    bootstrap();
+  }
+</script>

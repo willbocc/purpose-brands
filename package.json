@@ -17,6 +17,11 @@
     "@tailwindcss/vite": "^4.2.2",
     "astro": "^6.1.5",
     "astro-seo": "^1.1.0",
-    "tailwindcss": "^4.2.2"
+    "postprocessing": "^6.39.1",
+    "tailwindcss": "^4.2.2",
+    "three": "^0.184.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.184.1"
   }
 }
