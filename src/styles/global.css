@@ -31,19 +31,24 @@
 }
 
 @theme {
-  /* Brand palette */
-  --color-brand-purple: #7479e2;
-  --color-brand-purple-hover: #5b60d4;
-  --color-brand-purple-ink: #3e43b8;
+  /* Brand palette — purple-dominant scheme */
+  --color-brand-purple: #3e43b8;        /* primary background */
+  --color-brand-purple-hover: #4f54c9;  /* lifted/hover */
+  --color-brand-purple-ink: #2a2e8e;    /* deepest — button text + deep panels */
 
-  --color-ink: #0e0e10;
-  --color-ink-mute: #3a3a40;
-  --color-surface: #fafaf7;
-  --color-surface-dark: #0e0e10;
-  --color-surface-alt: #f2f1ec;
-  --color-mute: #6b6b70;
-  --color-hairline: #e6e6e1;
-  --color-hairline-dark: #1f1f22;
+  /* Warm accent used for stat numbers, arrows, focus highlights, active nav */
+  --color-accent: #f6c453;
+  --color-accent-hover: #ffd76e;
+
+  --color-ink: #ffffff;                                 /* primary text */
+  --color-ink-mute: rgba(255, 255, 255, 0.78);          /* secondary text */
+  --color-surface: #3e43b8;                             /* page bg */
+  --color-surface-dark: #2a2e8e;                        /* deep-purple panels (CookieBanner, ImageOverlay), footer */
+  --color-surface-alt: #4f54c9;                         /* lifted panels */
+  --color-surface-light: #fafaf7;                       /* cream insets (Calendly etc.) */
+  --color-mute: rgba(255, 255, 255, 0.65);
+  --color-hairline: rgba(255, 255, 255, 0.18);
+  --color-hairline-dark: rgba(255, 255, 255, 0.28);
 
   /* Typography
      - Maax Raw Bold → headlines + labels/buttons (--font-display, used with font-weight: 700)
@@ -111,14 +116,14 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-brand-purple);
+    outline: 2px solid var(--color-accent);
     outline-offset: 3px;
     border-radius: 2px;
   }
 
   ::selection {
-    background: var(--color-brand-purple);
-    color: white;
+    background: var(--color-accent);
+    color: var(--color-brand-purple-ink);
   }
 }
 
@@ -146,19 +151,19 @@
   }
 
   .surface-dark {
-    background: var(--color-surface-dark);
-    color: var(--color-surface);
+    background: var(--color-surface);
+    color: #ffffff;
   }
 
   .surface-dark h1,
   .surface-dark h2,
   .surface-dark h3,
   .surface-dark h4 {
-    color: var(--color-surface);
+    color: #ffffff;
   }
 
   .surface-dark .eyebrow {
-    color: rgba(250, 250, 247, 0.6);
+    color: rgba(255, 255, 255, 0.65);
   }
 
   .skip-link {
@@ -166,8 +171,8 @@
     top: -100px;
     left: 1rem;
     padding: 0.75rem 1rem;
-    background: var(--color-brand-purple);
-    color: white;
+    background: var(--color-accent);
+    color: var(--color-brand-purple-ink);
     z-index: 100;
   }
 

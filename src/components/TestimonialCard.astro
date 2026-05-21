@@ -24,16 +24,12 @@ const displayQuote = shortQuote || quote;
   .testimonial {
     margin: 0;
     padding: 2.5rem;
-    background: var(--color-surface-alt);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--color-hairline-dark);
     border-radius: 16px;
     display: flex;
     flex-direction: column;
     height: 100%;
-  }
-
-  :global(.section--dark) .testimonial {
-    background: rgba(250, 250, 247, 0.04);
-    border: 1px solid var(--color-hairline-dark);
   }
 
   .testimonial blockquote {
@@ -55,11 +51,7 @@ const displayQuote = shortQuote || quote;
     flex-direction: column;
     gap: 0.25rem;
     padding-top: 1.5rem;
-    border-top: 1px solid var(--color-hairline);
-  }
-
-  :global(.section--dark) .testimonial figcaption {
-    border-top-color: var(--color-hairline-dark);
+    border-top: 1px solid var(--color-hairline-dark);
   }
 
   .testimonial__author {

@@ -126,7 +126,7 @@ const { title, description, head, form, details } = contactPage.data;
   }
 
   .contact-details a:hover {
-    color: var(--color-brand-purple);
+    color: var(--color-accent);
   }
 
   .contact-form {
@@ -175,8 +175,8 @@ const { title, description, head, form, details } = contactPage.data;
   .contact-form__field input:focus,
   .contact-form__field textarea:focus {
     outline: none;
-    border-color: var(--color-brand-purple);
-    background: rgba(91, 46, 224, 0.05);
+    border-color: var(--color-accent);
+    background: rgba(255, 255, 255, 0.08);
   }
 
   .contact-form__field textarea {
@@ -186,8 +186,8 @@ const { title, description, head, form, details } = contactPage.data;
 
   .contact-form__submit {
     justify-self: start;
-    background: var(--color-brand-purple);
-    color: white;
+    background: #ffffff;
+    color: var(--color-brand-purple-ink);
     border: none;
     padding: 1rem 2rem;
     border-radius: 999px;
@@ -196,11 +196,12 @@ const { title, description, head, form, details } = contactPage.data;
     font-weight: 700;
     letter-spacing: 0.01em;
     cursor: pointer;
-    transition: background 140ms ease, transform 200ms ease;
+    transition: background 140ms ease, color 140ms ease, transform 200ms ease;
   }
 
   .contact-form__submit:hover {
-    background: var(--color-brand-purple-hover);
+    background: var(--color-accent);
+    color: var(--color-brand-purple-ink);
     transform: translateY(-1px);
   }
 
