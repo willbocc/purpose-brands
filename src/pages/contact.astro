@@ -2,7 +2,7 @@
 import { getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Section from '../components/Section.astro';
-import CalendlyEmbed from '../components/CalendlyEmbed.astro';
+// import CalendlyEmbed from '../components/CalendlyEmbed.astro';
 const contactPage = await getEntry('contact', 'contact');
 if (!contactPage) throw new Error('Missing contact content entry');
 const { title, description, head, form, details } = contactPage.data;
@@ -18,7 +18,15 @@ const { title, description, head, form, details } = contactPage.data;
     <div class="contact-grid">
       {/* Left: Calendly */}
       <div class="contact-col">
-        <CalendlyEmbed />
+        <!-- <CalendlyEmbed /> -->
+        <ul class="contact-details" aria-label="Contact details">
+          {details.map((item) => (
+            <li>
+              <span class="eyebrow">{item.label}</span>
+              <a href={item.href}>{item.value}</a>
+            </li>
+          ))}
+        </ul>
       </div>
 
       {/* Right: form + details */}
@@ -60,14 +68,6 @@ const { title, description, head, form, details } = contactPage.data;
 
           <button type="submit" class="contact-form__submit">{form.submitLabel}</button>
         </form>
-        <ul class="contact-details" aria-label="Contact details">
-          {details.map((item) => (
-            <li>
-              <span class="eyebrow">{item.label}</span>
-              <a href={item.href}>{item.value}</a>
-            </li>
-          ))}
-        </ul>
       </div>
     </div>
   </Section>
@@ -105,9 +105,9 @@ const { title, description, head, form, details } = contactPage.data;
 
   .contact-details {
     list-style: none;
-    padding: 3rem 0 0;
-    margin: 3rem 0 0;
-    border-top: 1px solid var(--color-hairline-dark);
+    /*padding: 3rem 0 0;*/
+    /*margin: 3rem 0 0;*/
+    /*border-top: 1px solid var(--color-hairline-dark);*/
     display: grid;
     gap: 1.5rem;
   }
