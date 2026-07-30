@@ -439,6 +439,26 @@ collections:
                             label: Submit button label,
                             widget: string,
                         }
+                      - {
+                            name: sendingLabel,
+                            label: Sending button label (while submitting),
+                            widget: string,
+                        }
+                      - {
+                            name: successTitle,
+                            label: Success notice heading,
+                            widget: string,
+                        }
+                      - {
+                            name: successMessage,
+                            label: Success notice message,
+                            widget: text,
+                        }
+                      - {
+                            name: errorMessage,
+                            label: Error notice message,
+                            widget: text,
+                        }
                 - name: details
                   label: Contact details
                   widget: list

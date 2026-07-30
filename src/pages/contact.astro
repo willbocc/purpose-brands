@@ -31,12 +31,20 @@ const { title, description, head, form, details } = contactPage.data;
 
       {/* Right: form + details */}
       <div class="contact-col">
+        <div class="contact-status" aria-live="polite">
+          <div class="contact-success" data-contact-success hidden tabindex="-1">
+            <h2 class="contact-success__title">{form.successTitle}</h2>
+            <p class="contact-success__body">{form.successMessage}</p>
+          </div>
+        </div>
+
         <form
           name="contact"
           method="POST"
           data-netlify="true"
           netlify-honeypot="bot-field"
           class="contact-form"
+          data-contact-form
         >
           <input type="hidden" name="form-name" value="contact" />
           <p class="contact-form__hp" aria-hidden="true">
@@ -66,12 +74,66 @@ const { title, description, head, form, details } = contactPage.data;
             </div>
           ))}
 
-          <button type="submit" class="contact-form__submit">{form.submitLabel}</button>
+          <p class="contact-form__error" data-contact-error aria-live="polite" hidden>
+            {form.errorMessage}
+          </p>
+
+          <button
+            type="submit"
+            class="contact-form__submit"
+            data-contact-submit
+            data-sending-label={form.sendingLabel}
+          >{form.submitLabel}</button>
         </form>
       </div>
     </div>
   </Section>
 </Base>
+
+<script>
+  // Progressive enhancement: submit the Netlify form over AJAX so we can show
+  // an inline success/error notice without a full-page redirect. If this script
+  // never runs (no JS), the form still POSTs natively to Netlify.
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  if (form) {
+    const submit = form.querySelector<HTMLButtonElement>('[data-contact-submit]');
+    const errorNotice = form.querySelector<HTMLElement>('[data-contact-error]');
+    const success = document.querySelector<HTMLElement>('[data-contact-success]');
+    const sendingLabel = submit?.dataset.sendingLabel ?? '';
+    const idleLabel = submit?.textContent ?? '';
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      if (errorNotice) errorNotice.hidden = true;
+      if (submit) {
+        submit.disabled = true;
+        if (sendingLabel) submit.textContent = sendingLabel;
+      }
+
+      try {
+        const response = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(new FormData(form) as unknown as Record<string, string>).toString(),
+        });
+        if (!response.ok) throw new Error(`Request failed: ${response.status}`);
+
+        form.hidden = true;
+        if (success) {
+          success.hidden = false;
+          success.focus();
+        }
+      } catch {
+        if (errorNotice) errorNotice.hidden = false;
+        if (submit) {
+          submit.disabled = false;
+          submit.textContent = idleLabel;
+        }
+      }
+    });
+  }
+</script>
 
 <style>
   .contact-head {
@@ -208,6 +270,66 @@ const { title, description, head, form, details } = contactPage.data;
     background: var(--color-accent);
     color: var(--color-brand-purple-ink);
     transform: translateY(-1px);
+  }
+
+  .contact-form__submit:disabled {
+    opacity: 0.6;
+    cursor: progress;
+    transform: none;
+  }
+
+  /* Inline error notice — stays put so the user can retry */
+  .contact-form__error {
+    margin: 0;
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--color-accent);
+    border-radius: 10px;
+    background: rgba(250, 250, 247, 0.04);
+    color: rgba(250, 250, 247, 0.85);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  /* Success notice — replaces the form once submitted */
+  .contact-status:empty {
+    display: none;
+  }
+
+  .contact-success {
+    border: 1px solid var(--color-hairline-dark);
+    border-left: 3px solid var(--color-accent);
+    border-radius: 12px;
+    background: rgba(250, 250, 247, 0.04);
+    padding: 2rem;
+  }
+
+  .contact-success:focus {
+    outline: none;
+  }
+
+  .contact-success__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: -0.01em;
+    margin: 0 0 0.75rem;
+    color: var(--color-accent);
+  }
+
+  .contact-success__body {
+    margin: 0;
+    color: rgba(250, 250, 247, 0.75);
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    max-width: 46ch;
+  }
+
+  /* `.contact-form` is display:grid, which would override the `hidden`
+     attribute's UA `display:none` — force it, plus the notices for safety. */
+  .contact-form[hidden],
+  .contact-form__error[hidden],
+  .contact-success[hidden] {
+    display: none;
   }
 
 </style>

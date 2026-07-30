@@ -43,7 +43,11 @@
         "required": true
       }
     ],
-    "submitLabel": "Send message"
+    "submitLabel": "Send message",
+    "sendingLabel": "Sending…",
+    "successTitle": "Message sent.",
+    "successMessage": "Thanks for reaching out. We'll read every word and get back to you within one working day.",
+    "errorMessage": "Something went wrong sending your message. Please try again, or email us directly at phoebe@wearepurposebrands.com."
   },
   "details": [
     {

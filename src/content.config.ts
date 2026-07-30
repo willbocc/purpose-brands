@@ -144,6 +144,10 @@ const contact = defineCollection({
         }),
       ),
       submitLabel: z.string(),
+      sendingLabel: z.string(),
+      successTitle: z.string(),
+      successMessage: z.string(),
+      errorMessage: z.string(),
     }),
     details: z.array(
       z.object({

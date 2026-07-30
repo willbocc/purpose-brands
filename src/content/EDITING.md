@@ -125,6 +125,9 @@ Each file is one page. Structure mirrors the page sections.
   - `placeholderBody` — body sentence (rendered as `[name] [body] [email]`)
 - `form.fields` — form field list. **Don't change `id` values** — they map to Netlify form submissions
 - `form.submitLabel` — submit button text
+- `form.sendingLabel` — button text shown while the message is being sent
+- `form.successTitle` / `form.successMessage` — the confirmation shown in place of the form once a message sends
+- `form.errorMessage` — shown (with the form left intact so they can retry) if sending fails
 - `form.honeypotLabel` — anti-spam label, hidden from view
 - `details` — repeating list of contact rows shown on `/contact`. Each row is `{ label, value, href }`:
   - `label` — small uppercase label (e.g. "Email", "Phone", "WhatsApp")
