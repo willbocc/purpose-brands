@@ -1,0 +1,83 @@
+{
+  "title": "Grow on every channel",
+  "description": "Scale everywhere your customers shop, with one senior team and the ecommerce expertise to make every channel convert.",
+  "noindex": true,
+  "hero": {
+    "headline": "We grow challenger brands on",
+    "channels": ["Amazon", "TikTok Shop", "Meta", "Google"],
+    "sub": "Scale everywhere your customers shop, with one senior team and the ecommerce expertise to make every channel convert.",
+    "primaryCtaLabel": "Book a call",
+    "secondaryCtaLabel": "See our work",
+    "secondaryCtaHref": "/work"
+  },
+  "oneTeam": {
+    "heading": "One team, every channel",
+    "body": [
+      "Amazon, TikTok Shop, Meta and Google — run by the same senior team, so your content, creative and strategy tell one consistent story everywhere your customers shop.",
+      "We're always happy to work alongside your existing partners too — sometimes the right setup is one team owning everything, sometimes it's us focused on the channels where we add the most value."
+    ]
+  },
+  "whatWeDo": {
+    "heading": "What we do",
+    "items": [
+      {
+        "title": "Amazon",
+        "body": "Listings, A+ content, storefronts, PPC and pricing — built by a team that lives in the platform every day."
+      },
+      {
+        "title": "TikTok Shop",
+        "body": "The fastest-growing shelf in ecommerce, and one worth a head start on rather than a scramble. We're building TikTok Shop capability for our clients now — shop setup, creator and affiliate management, live selling and paid."
+      },
+      {
+        "title": "Meta",
+        "body": "Paid social that does more than drive traffic — creative and targeting built to convert browsers into buyers, feeding the same brand story as your Amazon and TikTok Shop presence."
+      },
+      {
+        "title": "Google",
+        "body": "Search and Shopping campaigns that capture the customers already looking for you, tied back to the same measurement as everything else we run."
+      }
+    ]
+  },
+  "why": {
+    "heading": "Why Purpose Brands",
+    "items": [
+      {
+        "lead": "We're built for challenger brands.",
+        "body": "Funded, retail-ready, ready to scale — not pre-launch. Drinks is where we go deepest: retailer listing rules, ABV compliance quirks, seasonality and category dynamics most agencies have to learn on your account. We bring that same full-funnel thinking to the other ambitious consumer brands we work with."
+      },
+      {
+        "lead": "You work directly with senior hands.",
+        "body": "The people planning your strategy are the same people delivering it, day to day."
+      },
+      {
+        "lead": "One team, one view of the customer.",
+        "body": "Your Amazon content informs your TikTok Shop creative, which informs your Meta targeting — because it's the same people doing the thinking across every channel."
+      }
+    ]
+  },
+  "howWeWork": {
+    "heading": "How we work",
+    "items": [
+      {
+        "title": "Audit",
+        "body": "We map where you're leaking sales across every channel you're already on, plus the ones you're not."
+      },
+      {
+        "title": "Plan",
+        "body": "A single channel strategy, prioritised by where the revenue actually is."
+      },
+      {
+        "title": "Execute",
+        "body": "Listings, content, campaigns and creative, built and managed in-house."
+      },
+      {
+        "title": "Report",
+        "body": "One view of performance across Amazon, TikTok Shop, Meta and Google, not four separate dashboards."
+      }
+    ]
+  },
+  "cta": {
+    "headline": "Ready to scale everywhere your customers shop?",
+    "ctaLabel": "Book a call with the team"
+  }
+}

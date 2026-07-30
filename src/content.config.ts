@@ -155,6 +155,34 @@ const contact = defineCollection({
   }),
 });
 
+const channels = defineCollection({
+  loader: glob({ pattern: 'channels.json', base: './src/content/pages' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    noindex: z.boolean().default(true),
+    hero: z.object({
+      headline: z.string(),
+      channels: z.array(z.string()),
+      sub: z.string(),
+      primaryCtaLabel: z.string(),
+      secondaryCtaLabel: z.string(),
+      secondaryCtaHref: z.string(),
+    }),
+    oneTeam: headingOnly.extend({ body: z.array(z.string()) }),
+    whatWeDo: headingOnly.extend({ items: z.array(numberedItem) }),
+    why: headingOnly.extend({
+      items: z.array(z.object({ lead: z.string(), body: z.string() })),
+    }),
+    howWeWork: headingOnly.extend({ items: z.array(numberedItem) }),
+    cta: z.object({
+      headline: z.string(),
+      subtext: z.string().optional(),
+      ctaLabel: z.string(),
+    }),
+  }),
+});
+
 const notFound = defineCollection({
   loader: glob({ pattern: 'not-found.json', base: './src/content/pages' }),
   schema: z.object({
@@ -238,6 +266,7 @@ export const collections = {
   about,
   work,
   contact,
+  channels,
   notFound,
   settings,
   contacts,

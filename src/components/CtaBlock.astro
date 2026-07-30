@@ -5,6 +5,8 @@ import { getSettings } from '../lib/site';
 interface Props {
   headline?: string;
   subtext?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
 }
 
 const settings = await getSettings();
@@ -12,14 +14,16 @@ const settings = await getSettings();
 const {
   headline = settings.cta.defaultHeadline,
   subtext = settings.cta.defaultSubtext,
+  ctaLabel = settings.cta.label,
+  ctaHref = settings.cta.href,
 } = Astro.props;
 ---
 
 <div class="cta-block">
   <h2 class="cta-block__headline">{headline}</h2>
-  <p class="cta-block__subtext">{subtext}</p>
+  {subtext && <p class="cta-block__subtext">{subtext}</p>}
   <div class="cta-block__actions">
-    <Button href={settings.cta.href} variant="primary" size="lg">{settings.cta.label}</Button>
+    <Button href={ctaHref} variant="primary" size="lg">{ctaLabel}</Button>
   </div>
 </div>
 

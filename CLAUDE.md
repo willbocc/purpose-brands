@@ -24,6 +24,7 @@ Marketing site for Purpose Brands — Amazon agency for food, drink, and wellnes
 - `/work` — All case studies (long-form cards)
 - `/work/[slug]` — Individual case study with hero stat, situation, results, quote
 - `/contact` — Calendly embed + contact form
+- `/channels` — Standalone multi-channel landing page (Amazon · TikTok Shop · Meta · Google). Unlinked from nav/footer, `noindex` by default (CMS-toggleable)
 - `/404` — Not found
 
 ## Key files
@@ -36,7 +37,7 @@ Marketing site for Purpose Brands — Amazon agency for food, drink, and wellnes
 
 ## Components
 - `ProofBar` — row of large stat blocks (value + label)
-- `CtaBlock` — single-button CTA driven by `settings.cta.label` + `settings.cta.href` (no more `dualCta`)
+- `CtaBlock` — single-button CTA; defaults to `settings.cta.*`, with optional per-page `headline`/`subtext`/`ctaLabel`/`ctaHref` overrides (empty `subtext` hides the line)
 - `CaseStudyCard` — card with optional `heroStat` display
 - `TestimonialCard` — quote card with optional `shortQuote` for short display
 - `ImageOverlay` — full-bleed background image with overlaid display-weight body + optional `Button` CTA. Used by About → SAS section. Falls back to flat dark panel if no image set.

@@ -132,6 +132,19 @@ Each file is one page. Structure mirrors the page sections.
   - `href` — the link destination (`mailto:…`, `tel:…`, `https://wa.me/…`, `https://linkedin.com/…`)
   - Add or remove rows freely — the page renders one `<li>` per entry. Values are stored here, not pulled from `contacts/*.json`.
 
+### `pages/channels.json`
+
+Standalone landing page at `/channels` (multi-channel positioning: Amazon · TikTok Shop · Meta · Google). Not linked from the nav or footer — share the URL directly.
+
+- `title` / `description` — meta
+- `noindex` — keeps the page out of search engines while it's a campaign-only URL; turn off when promoting it properly
+- `hero` — headline, `channels` (list of channel names shown as a second headline line), sub-paragraph, CTA labels + href. The primary CTA links to Calendly (or `/contact` if no Calendly URL is set)
+- `oneTeam` — "One team, every channel" intro (heading + body paragraphs)
+- `whatWeDo` — heading + one item per channel (`title` + `body`)
+- `why` — heading + reasons; each has a `lead` (bold first line) and `body`
+- `howWeWork` — heading + the four numbered steps (`title` + `body`)
+- `cta` — bottom CTA: `headline`, optional `subtext`, and `ctaLabel` (button link uses the site-wide CTA href from settings)
+
 ### `pages/not-found.json`
 
 - `title` — `<title>` for the 404 page

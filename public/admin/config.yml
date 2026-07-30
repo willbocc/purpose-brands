@@ -448,6 +448,110 @@ collections:
                       - { name: value, label: Display text, widget: string }
                       - { name: href, label: Link href, widget: string }
 
+          - name: channels
+            label: Channels landing page
+            file: src/content/pages/channels.json
+            format: json
+            fields:
+                - { name: title, label: Page title, widget: string }
+                - { name: description, label: Meta description, widget: text }
+                - name: noindex
+                  label: Hide from search engines
+                  widget: boolean
+                  default: true
+                  hint: Keeps the page out of Google while it's a campaign-only URL. Turn off when promoting it properly.
+                - name: hero
+                  label: Hero
+                  widget: object
+                  fields:
+                      - { name: headline, label: Headline, widget: string }
+                      - {
+                            name: channels,
+                            label: Channel names (shown after headline),
+                            widget: list,
+                            field: { label: Channel, widget: string },
+                        }
+                      - { name: sub, label: Sub-paragraph, widget: text }
+                      - {
+                            name: primaryCtaLabel,
+                            label: Primary CTA label,
+                            widget: string,
+                        }
+                      - {
+                            name: secondaryCtaLabel,
+                            label: Secondary CTA label,
+                            widget: string,
+                        }
+                      - {
+                            name: secondaryCtaHref,
+                            label: Secondary CTA href,
+                            widget: string,
+                        }
+                - name: oneTeam
+                  label: One team intro
+                  widget: object
+                  fields:
+                      - { name: heading, label: Heading, widget: string }
+                      - {
+                            name: body,
+                            label: Body paragraphs,
+                            widget: list,
+                            field: { label: Paragraph, widget: text },
+                        }
+                - name: whatWeDo
+                  label: What we do
+                  widget: object
+                  fields:
+                      - { name: heading, label: Heading, widget: string }
+                      - name: items
+                        label: Channels
+                        widget: list
+                        fields:
+                            - { name: title, label: Title, widget: string }
+                            - { name: body, label: Body, widget: text }
+                - name: why
+                  label: Why Purpose Brands
+                  widget: object
+                  fields:
+                      - { name: heading, label: Heading, widget: string }
+                      - name: items
+                        label: Reasons
+                        widget: list
+                        fields:
+                            - {
+                                  name: lead,
+                                  label: Bold lead line,
+                                  widget: string,
+                              }
+                            - { name: body, label: Body, widget: text }
+                - name: howWeWork
+                  label: How we work
+                  widget: object
+                  fields:
+                      - { name: heading, label: Heading, widget: string }
+                      - name: items
+                        label: Steps
+                        widget: list
+                        fields:
+                            - { name: title, label: Title, widget: string }
+                            - { name: body, label: Body, widget: text }
+                - name: cta
+                  label: Bottom CTA
+                  widget: object
+                  fields:
+                      - { name: headline, label: Headline, widget: string }
+                      - {
+                            name: subtext,
+                            label: Subtext (optional),
+                            widget: text,
+                            required: false,
+                        }
+                      - {
+                            name: ctaLabel,
+                            label: Button label,
+                            widget: string,
+                        }
+
           - name: notFound
             label: 404 page
             file: src/content/pages/not-found.json

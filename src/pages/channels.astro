@@ -1,0 +1,165 @@
+---
+import { getEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Section from '../components/Section.astro';
+import Button from '../components/Button.astro';
+import NumberedList from '../components/NumberedList.astro';
+import CtaBlock from '../components/CtaBlock.astro';
+import { getSettings, bookCallHref } from '../lib/site';
+
+const page = await getEntry('channels', 'channels');
+if (!page) throw new Error('Missing channels content entry');
+const { title, description, noindex, hero, oneTeam, whatWeDo, why, howWeWork, cta } = page.data;
+
+const settings = await getSettings();
+const ctaHref = bookCallHref(settings.calendly);
+---
+
+<Base surface="dark" title={title} description={description} noindex={noindex}>
+  {/* Hero */}
+  <section class="hero">
+    <div class="container-site hero__inner">
+      <h1 class="hero__headline">
+        {hero.headline}
+        <span class="hero__channels">{hero.channels.join(' · ')}</span>
+      </h1>
+      <p class="hero__sub">{hero.sub}</p>
+      <div class="hero__actions">
+        <Button href={ctaHref} variant="primary" size="lg">{hero.primaryCtaLabel}</Button>
+        <Button href={hero.secondaryCtaHref} variant="ghost">{hero.secondaryCtaLabel}</Button>
+      </div>
+    </div>
+  </section>
+
+  {/* One team, every channel */}
+  <Section tone="dark">
+    <div class="one-team">
+      <h2>{oneTeam.heading}</h2>
+      <div class="one-team__body">
+        {oneTeam.body.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+  </Section>
+
+  {/* What we do */}
+  <Section tone="dark">
+    <div class="section-head">
+      <h2>{whatWeDo.heading}</h2>
+    </div>
+    <NumberedList items={whatWeDo.items} columns={4} />
+  </Section>
+
+  {/* Why Purpose Brands */}
+  <Section tone="dark">
+    <div class="section-head">
+      <h2>{why.heading}</h2>
+    </div>
+    <div class="why-list">
+      {why.items.map((item) => (
+        <p class="why-list__item">
+          <strong>{item.lead}</strong> {item.body}
+        </p>
+      ))}
+    </div>
+  </Section>
+
+  {/* How we work */}
+  <Section tone="dark">
+    <div class="section-head">
+      <h2>{howWeWork.heading}</h2>
+    </div>
+    <NumberedList items={howWeWork.items} columns={4} />
+  </Section>
+
+  {/* Final CTA */}
+  <Section tone="dark">
+    <CtaBlock headline={cta.headline} subtext={cta.subtext ?? ''} ctaLabel={cta.ctaLabel} />
+  </Section>
+</Base>
+
+<style>
+  .hero {
+    padding-block: clamp(6rem, 10vw, 12rem) clamp(4rem, 6vw, 6rem);
+  }
+
+  .hero__headline {
+    max-width: 24ch;
+    text-wrap: balance;
+    margin: 0 0 1rem;
+  }
+
+  .hero__channels {
+    display: block;
+    margin-top: 0.5rem;
+  }
+
+  .hero__sub {
+    max-width: 58ch;
+    font-size: 1.125rem;
+    line-height: 1.55;
+    color: rgba(250, 250, 247, 0.75);
+    margin: 0 0 3rem;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    align-items: center;
+  }
+
+  .section-head {
+    margin-bottom: 4rem;
+    max-width: 42rem;
+  }
+
+  .section-head h2 {
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .one-team {
+    max-width: 56rem;
+  }
+
+  .one-team h2 {
+    margin: 0 0 2rem;
+    text-wrap: balance;
+  }
+
+  .one-team__body {
+    display: grid;
+    gap: 1.5rem;
+    max-width: 60ch;
+  }
+
+  .one-team__body p {
+    font-size: 1.125rem;
+    line-height: 1.65;
+    color: rgba(250, 250, 247, 0.78);
+    margin: 0;
+  }
+
+  .why-list {
+    display: grid;
+    gap: 2rem;
+    max-width: 60ch;
+  }
+
+  .why-list__item {
+    line-height: 1.65;
+    color: rgba(250, 250, 247, 0.75);
+    margin: 0;
+  }
+
+  .why-list__item strong {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    margin-bottom: 0.5rem;
+  }
+</style>
