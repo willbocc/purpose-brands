@@ -1,9 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 128 128">
-    <path d="M50.4 78.5a75.1 75.1 0 0 0-28.5 6.9l24.2-65.7c.7-2 1.9-3.2 3.4-3.2h29c1.5 0 2.7 1.2 3.4 3.2l24.2 65.7s-11.6-7-28.5-7L67 45.5c-.4-1.7-1.6-2.8-2.9-2.8-1.3 0-2.5 1.1-2.9 2.7L50.4 78.5Zm-1.1 28.2Zm-4.2-20.2c-2 6.6-.6 15.8 4.2 20.2a17.5 17.5 0 0 1 .2-.7 5.5 5.5 0 0 1 5.7-4.5c2.8.1 4.3 1.5 4.7 4.7.2 1.1.2 2.3.2 3.5v.4c0 2.7.7 5.2 2.2 7.4a13 13 0 0 0 5.7 4.9v-.3l-.2-.3c-1.8-5.6-.5-9.5 4.4-12.8l1.5-1a73 73 0 0 0 3.2-2.2 16 16 0 0 0 6.8-11.4c.3-2 .1-4-.6-6l-.8.6-1.6 1a37 37 0 0 1-22.4 2.7c-5-.7-9.7-2-13.2-6.2Z" />
-    <style>
-        path { fill: #000; }
-        @media (prefers-color-scheme: dark) {
-            path { fill: #FFF; }
-        }
-    </style>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description><dc:creator>RealFaviconGenerator</dc:creator><dc:source>https://realfavicongenerator.net</dc:source></rdf:Description></rdf:RDF></metadata><g clip-path="url(#SvgjsClipPath1025)"><rect width="1000" height="1000" fill="#3e43b8"></rect><g transform="matrix(7.070707070707071,0,0,7.070707070707071,150,291.4141414141414)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 99 59" width="99" height="59"><path fill="#fff" d="M23.856 0c13.692 0 23.016 7.476 23.016 19.74s-9.324 20.496-23.016 20.496h-11.34v18.648H0V0zm53.366 0c12.011 0 20.327 5.544 20.327 16.296 0 4.536-2.268 8.988-6.048 11.928 5.376 3.78 7.477 8.148 7.477 13.44 0 10.332-8.065 17.22-20.329 17.22H50.762V0zM63.277 47.376h12.516c6.468 0 10.584-1.596 10.584-6.804 0-4.788-4.2-6.469-10.248-6.469H63.277zM12.516 28.728h9.156c8.4 0 12.768-2.856 12.768-8.736 0-5.964-4.284-8.484-12.768-8.484h-9.156zm50.761-5.125h11.928c6.804 0 9.744-2.1 9.744-6.047 0-4.536-3.192-6.048-10.248-6.048H63.277z"></path></svg></g></g><defs><clipPath id="SvgjsClipPath1025"><rect width="1000" height="1000" x="0" y="0" rx="350" ry="350"></rect></clipPath></defs></svg>
